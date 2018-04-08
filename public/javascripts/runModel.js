@@ -1,6 +1,6 @@
 const {getWeatherForecast} = require('./getWeatherForecast')
 
-const threshold = 0.9;
+const threshold = 0.62;
 
 const compareDates = (a, b) => {
 	return (new Date(a).getUTCFullYear() == new Date(b).getUTCFullYear() &&
@@ -179,10 +179,7 @@ const runModel = (locationString, date) => {
 				location,
 				intercept: 1,
 			})
-
-			console.log('result', result)
-			console.log('sig(res)', sigmoid(result))
-
+			
 			if(sigmoid(result)>threshold){
 				willFlood = true;
 				return;

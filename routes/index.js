@@ -5,6 +5,7 @@ const { sendWarningMail } = require('../public/javascripts/sendMail')
 const { getWeatherForecast } = require('../public/javascripts/getWeatherForecast')
 const { runModel } = require('../public/javascripts/runModel')
 let {users} = require('../public/sampledata/users')
+const {sendSms} = require('../public/javascripts/sendSms')
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -28,7 +29,7 @@ router.get('/predict',  function(req, res, next) {
 					if (results){
 						//Will flood!
 						if (body.email) sendWarningMail(body)
-						if (body.phone) sendSms(body)
+						if (body.phone) sendSms(body, 'CONT')
 					}
 				})
 				.catch(err => {err})
