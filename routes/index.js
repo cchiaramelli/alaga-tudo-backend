@@ -6,9 +6,6 @@ const { getWeatherForecast } = require('../public/javascripts/getWeatherForecast
 const { runModel } = require('../public/javascripts/runModel')
 let {users} = require('../public/sampledata/users')
 
-const fetch = require('node-fetch')
-global.Headers = fetch.Headers;
-
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
@@ -16,28 +13,31 @@ router.get('/', function(req, res, next) {
 
 router.get('/predict',  function(req, res, next) {
 
-	console.log('users', users)
 	users.forEach(user => {
 		user.locations.forEach(location => {
 			console.log('location', location)
+			var date = new Date();
 			for (i=0; i<user.daysPredict; i++){
-				var date = new Date();
-				date.setDate(date.getDate() + 1)
-
+				console.log('Date', date)
 				runModel(('LOCATION'+location).toUpperCase(), date).then(results => {
-					console.log('Res for ', location, date, results)
+					const body = {
+						...user,
+						date,
+						location,
+					}
 					if (results){
 						//Will flood!
-						// sendWarningMail(body)
-						//sendWarning
+						if (body.email) sendWarningMail(body)
+						if (body.phone) sendSms(body)
 					}
-					res.send(results)
 				})
 				.catch(err => {err})
+				
+				date.setDate(date.getDate() + 1)
 			}
 		})
 	})
-	// })
+	res.send('nice')
 })
 
 router.post('/predict', function(req, res, next) {
@@ -48,11 +48,11 @@ router.post('/predict', function(req, res, next) {
 	console.log('Body', body)
 
 	runModel(('LOCATION'+body.location).toUpperCase(), body.date).then(results => {
-		console.log('Res', results)
+
 		if (results){
 			//Will flood!
-			sendWarningMail(body)
-			//sendWarning
+			if (user.email) sendWarningMail(user)
+			if (user.phone) sendSms(user)
 		}
 		res.status(200).send({results})
 	})
@@ -66,21 +66,4 @@ router.get('/forecast', async function(req, res, next) {
 	res.send(todayForecast)
 })
 
-router.get('/req', async function(req, res, next) {
-
-	const a = await fetch('https://alagatudo.now.sh/predict', {
-	  method: 'get',
-	  mode: 'no-cors',
-	  headers: new Headers({
-	    'Content-Type': 'application/json',
-	  }),
-	})
-	.then(res => res.json())
-	.catch((err) => {
-	  console.log(err);
-	  return null;
-	});
-
-	console.log(a)
-})
 module.exports = router;
