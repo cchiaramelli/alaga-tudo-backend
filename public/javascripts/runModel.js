@@ -1,10 +1,12 @@
 const {getWeatherForecast} = require('./getWeatherForecast')
 
-const neighbourhoodDictionary = {
-
-}
-
 const threshold = 0.9;
+
+const compareDates = (a, b) => {
+	return (new Date(a).getUTCFullYear() == new Date(b).getUTCFullYear() &&
+			new Date(a).getUTCMonth() == new Date(b).getUTCMonth() &&
+			new Date(a).getUTCDate() == new Date(b).getUTCDate())
+}
 
 const multMatrices = (a,b) => {
 	var sum = 0.0
@@ -17,10 +19,12 @@ const multMatrices = (a,b) => {
 
 const sigmoid = (x) => 1/(1+Math.exp(-x))
 
-const locationsWeights = [{
-	name: 'mylocation',
-	value: 0.032,
-}]
+const locationsWeights = [
+	{
+		name: 'locationmylocation',
+		value: 0.032,
+	}
+]
 
 const model = {
 	min_temp: 1.270,
@@ -57,7 +61,7 @@ const meanSd = {
 
 var weekForecast = getWeatherForecast()
 
-const runModel = (locationString) => {
+const runModel = (locationString, date) => {
 	console.log('Running')
 
 	const location = locationsWeights.find(loc => loc.name == locationString).value || 0;
@@ -65,7 +69,13 @@ const runModel = (locationString) => {
 	var willFlood = false;
 
 	return weekForecast.then(week => {
-		const day = week[0]
+
+		const day = week.find(day => compareDates(day.date , date)).hours
+
+		if (!day) {
+			console.log("DATE DOESNT EXIST")
+			return null
+		}
 
 		day.forEach(hour => {
 

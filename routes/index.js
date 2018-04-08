@@ -12,20 +12,28 @@ router.get('/', function(req, res, next) {
 
 router.post('/predict', function(req, res, next) {
 	console.log('POST')
-	
+
 	const body = req.body;
 
-	const { date, latitude, longitude } = body
+	const {
+		name,
+	    email,
+	    telephone,
+	    location,
+	    date,
+	    daysPredict
+	 } = body
 
 	console.log('Body', body)
 
-	runModel('mylocation').then(results => {
+	runModel('location'+location, date).then(results => {
 		if (results){
 			//Will flood!
 			// sendWarningMail({email: 'gmcrivelli@gmail.com'})
 		}
 		res.send(results)
 	})
+	.catch(err => {err})
 })
 
 router.get('/forecast', async function(req, res, next) {
