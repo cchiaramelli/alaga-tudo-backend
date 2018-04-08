@@ -1,8 +1,6 @@
 const nodemailer = require('nodemailer');
 var fs = require('fs')
 
-const { numberToString } = require('../utils');
-
 let transporter = nodemailer.createTransport({
     host: 'smtp.gmail.com',
     port: 587,
