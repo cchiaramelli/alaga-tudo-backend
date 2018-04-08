@@ -21,9 +21,99 @@ const sigmoid = (x) => 1/(1+Math.exp(-x))
 
 const locationsWeights = [
 	{
-		name: 'locationmylocation',
+		name: 'LOCATIONBUTANTA',
+		value: 2.13,
+	},{
+		name: 'LOCATIONCAMPOLIMPO',
 		value: 0.032,
-	}
+	},{
+		name: 'LOCATIONCAPELADOSOCORRO',
+		value: -0.148,
+	},{
+		name: 'LOCATIONCASAVERDE',
+		value: 0.448,
+	},{
+		name: 'LOCATIONCIDADEADEMAR',
+		value: -1.067,
+	},{
+		name: 'LOCATIONCIDADETIRADENTES',
+		value: -16.739,
+	},{
+		name: 'LOCATIONERMELINDAMATARAZZO',
+		value: -2.917,
+	},{
+		name: 'LOCATIONFREGUESIA',
+		value: 0.363,
+	},{
+		name: 'LOCATIONGUAIANASES',
+		value: -2.305,
+	},{
+		name: 'LOCATIONIPIRANGA',
+		value: 0.985,
+	},{
+		name: 'LOCATIONITAIMPAULISTA',
+		value: -1.299,
+	},{
+		name: 'LOCATIONITAQUERA',
+		value: -0.722,
+	},{
+		name: 'LOCATIONJABAQUARA',
+		value: -3.590,
+	},{
+		name: 'LOCATIONJACANA',
+		value: -1.007,
+	},{
+		name: 'LOCATIONLAPA',
+		value: 1.975,
+	},{
+		name: 'LOCATIONMBOIMIRIM',
+		value: 0.298,
+	},{
+		name: 'LOCATIONMOOCA',
+		value: 1.919,
+	},{
+		name: 'LOCATIONPARELHEIROS',
+		value: -3.391,
+	},{
+		name: 'LOCATIONPENHA',
+		value: 0.855,
+	},{
+		name: 'LOCATIONPERUS',
+		value: -1.804,
+	},{
+		name: 'LOCATIONPINHEIROS',
+		value: 0.787,
+	},{
+		name: 'LOCATIONPIRITUBA',
+		value: 0.787,
+	},{
+		name: 'LOCATIONSANTANA',
+		value: 1.216,
+	},{
+		name: 'LOCATIONSANTOAMARO',
+		value: 1.618,
+	},{
+		name: 'LOCATIONSAOMATHEUS',
+		value: -1.635,
+	},{
+		name: 'LOCATIONSAOMIGUELPAULISTA',
+		value: -1.037,
+	},{
+		name: 'LOCATIONSAOPOPEMBA',
+		value: -16.519,
+	},{
+		name: 'LOCATIONSE',
+		value: 2.059,
+	},{
+		name: 'LOCATIONVILAMARIA',
+		value: 0.467,
+	},{
+		name: 'LOCATIONVILAMARIANA',
+		value: 1.29,
+	},{
+		name: 'LOCATIONVILAPRUDENTE',
+		value: 0.877,
+	},
 ]
 
 const model = {
@@ -62,9 +152,10 @@ const meanSd = {
 var weekForecast = getWeatherForecast()
 
 const runModel = (locationString, date) => {
-	console.log('Running')
+	console.log('Running', locationString)
 
-	const location = locationsWeights.find(loc => loc.name == locationString).value || 0;
+	var location = locationsWeights.find(loc => loc.name == locationString)
+	location = location.value || 0
 
 	var willFlood = false;
 
